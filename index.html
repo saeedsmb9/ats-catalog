@@ -169,7 +169,15 @@ footer .ctas{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 @keyframes flash{0%,60%{box-shadow:0 0 0 3px var(--gold)}100%{box-shadow:0 0 0 0 transparent}}
 .card .add.pick{border-color:var(--gold);color:var(--ink)}
 .card .add.pick[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
-.vars h4,.rel h4{font-size:13.5px;font-weight:600;color:var(--muted);margin-bottom:8px}
+.vars h4,.vlist li.on{background:#fbf3ec}
+.vlist .qrow{grid-column:1/-1;display:flex;align-items:center;gap:10px;margin-top:6px;font-size:13px;font-weight:500;color:var(--muted)}
+.qt{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--card)}
+.qt button{width:32px;height:30px;font-size:16px;color:var(--ink)}
+.qt button:hover{background:#efe7db}
+.qt input{width:46px;height:30px;border:0;border-inline:1px solid var(--line);text-align:center;font:inherit;font-size:14px;font-weight:600;color:var(--ink);background:transparent;-moz-appearance:textfield}
+.qt input::-webkit-outer-spin-button,.qt input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.qt input:focus{outline:2px solid var(--gold);outline-offset:-2px}
+.rel h4{font-size:13.5px;font-weight:600;color:var(--muted);margin-bottom:8px}
 .vlist{list-style:none;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
 .vlist li{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;padding:9px 12px;border-top:1px solid var(--line)}
 .vlist li:first-child{border-top:0}
@@ -177,9 +185,9 @@ footer .ctas{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .vlist .sz{color:var(--red);font-weight:600}
 .vlist .cd{grid-column:1;font-size:12.5px;color:var(--muted);direction:ltr;text-align:right;font-variant-numeric:tabular-nums;letter-spacing:.2px}
 .vlist .cd small{color:#a99a88;margin-inline-start:6px}
-.vlist button{grid-column:2;grid-row:1/span 2;width:36px;height:36px;border-radius:10px;border:1px solid var(--line);font-size:19px;color:var(--red);display:flex;align-items:center;justify-content:center;transition:background .15s}
-.vlist button:hover{border-color:var(--red)}
-.vlist button[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff;font-size:15px}
+.vlist .tg{grid-column:2;grid-row:1/span 2;width:36px;height:36px;border-radius:10px;border:1px solid var(--line);font-size:19px;color:var(--red);display:flex;align-items:center;justify-content:center;transition:background .15s}
+.vlist .tg:hover{border-color:var(--red)}
+.vlist .tg[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff;font-size:15px}
 .rel h4{font-size:13.5px;font-weight:700;color:var(--muted);margin-bottom:10px}
 .rel div{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .rel button{aspect-ratio:1;border-radius:10px;overflow:hidden;background:#efe7db;border:2px solid transparent;padding:4px;transition:border-color .15s}
@@ -204,9 +212,6 @@ footer .ctas{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .panel li .rmv{width:34px;height:34px;border-radius:8px;color:var(--muted);font-size:20px;align-self:flex-start}
 .panel li .rmv:hover{background:#f6e3df;color:var(--red)}
 .panel li .qt{display:flex;width:max-content;align-items:center;gap:0;margin-top:6px;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--paper)}
-.panel li .qt button{width:30px;height:28px;font-size:16px;color:var(--ink)}
-.panel li .qt button:hover{background:#efe7db}
-.panel li .qt output{min-width:32px;text-align:center;font-size:13.5px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
 .panel .none{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--muted);padding:30px;gap:6px}
 .panel .none b{font-family:var(--display);font-size:20px;color:var(--ink)}
 .panel .act{padding:14px 20px 20px;border-top:1px solid var(--line);display:grid;grid-template-columns:2fr 1fr;gap:8px}
@@ -349,6 +354,8 @@ const entName=e=>e.item?(e.v[0]+(e.v[3]?' – '+e.v[3]:'')):e.p.name;
 const entCode=e=>e.v?e.v[1]:'';
 let qty={};try{qty=JSON.parse(localStorage.getItem('ats-qty')||'{}')}catch(e){}
 const q1=k=>Math.max(1,parseInt(qty[k])||1);
+const stepper=k=>`<span class="qt" role="group" aria-label="الكمية"><button type="button" data-qd="${k}" aria-label="إنقاص الكمية">−</button><input type="number" inputmode="numeric" min="1" max="9999" data-qn="${k}" value="${q1(k)}" aria-label="الكمية"><button type="button" data-qi="${k}" aria-label="زيادة الكمية">+</button></span>`;
+const setQty=(k,n)=>{qty[k]=Math.min(9999,Math.max(1,parseInt(n)||1));saveQty();document.querySelectorAll(`[data-qn="${k}"]`).forEach(i=>{if(document.activeElement!==i)i.value=qty[k]});syncWa()};
 const saveQty=()=>{try{localStorage.setItem('ats-qty',JSON.stringify(qty))}catch(e){}};
 const LRM='‎';
 const nAs=n=>n==1?'صنف واحد':n==2?'صنفين':n>=3&&n<=10?n+' أصناف':n+' صنف';
@@ -413,12 +420,13 @@ function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');clear
 function refreshCard(pid){const p=BYID[pid];if(!p)return;document.querySelectorAll(`.card [data-open="${pid}"][data-pick]`).forEach(b=>{const n=list.filter(k=>k.split(':')[0]==pid).length;b.setAttribute('aria-pressed',n>0);b.textContent=n?`✓ تم اختيار ${nAs(n)}`:'اختر الصنف'})}
 function toggle(id){id=String(id);const i=list.indexOf(id);const added=i<0;if(added)list.push(id);else list.splice(i,1);save();counts();
   document.querySelectorAll(`.card [data-add="${id}"]`).forEach(b=>{b.setAttribute('aria-pressed',added);b.textContent=addLabel(added)});
-  document.querySelectorAll(`.vlist [data-add="${id}"]`).forEach(b=>{b.setAttribute('aria-pressed',added);b.textContent=added?'✓':'+'});
   refreshCard(+id.split(':')[0]);
-  if(cur>-1)vstate();if($('drawer').classList.contains('on'))drawer();
+  if(cur>-1){const y=$('vbody').scrollTop;renderVars(shown[cur]);$('vbody').scrollTop=y;vstate()}if($('drawer').classList.contains('on'))drawer();
   toast(added?'تمت الإضافة لقائمة الاستفسار':'تمت الإزالة من القائمة')}
 
 /* viewer */
+function renderVars(p){const vs=p.v;
+  $('vars').innerHTML=vs.length?`<h4>${vs.length>1?'اختر الصنف المطلوب ('+vs.length+')':'رقم الصنف'}</h4><ul class="vlist">${vs.map((x,i)=>{const k=p.id+':'+i,on=list.includes(k);return `<li class="${on?'on':''}"><span class="nm">${esc(x[0])}${x[3]?` <span class="sz">· ${esc(x[3])}</span>`:''}</span><span class="cd">${esc(x[1])}${x[2]?`<small>${esc(x[2])}</small>`:''}</span><button type="button" class="tg" data-add="${k}" aria-pressed="${on}" aria-label="${on?'إزالة':'إضافة'} ${esc(x[0])} ${esc(x[3]||'')}">${on?'✓':'+'}</button>${on?`<div class="qrow">الكمية ${stepper(k)}</div>`:''}</li>`}).join('')}</ul>`:'';}
 function vstate(){const p=shown[cur],b=$('vadd');
   if(p.v.length>1){const n=list.filter(k=>k.split(':')[0]==p.id).length;b.classList.toggle('on',n>0);b.textContent=n?`✓ تم اختيار ${nAs(n)} – أرسل الاستفسار`:'اختر الصنف من القائمة ↓';b.dataset.mode=n?'list':'pick';return}
   const key=p.v.length?p.id+':0':String(p.id),on=list.includes(key);b.dataset.mode='add';b.classList.toggle('on',on);b.textContent=on?'✓ في قائمة الاستفسار':'+ أضف لقائمة الاستفسار'}
@@ -433,9 +441,9 @@ function openV(id,push=true){
   const rel=ITEMS.filter(x=>x.cat==p.cat&&x.id!=p.id).slice(0,6);
   $('vrel').innerHTML=rel.map(x=>`<button type="button" data-open="${x.id}" aria-label="${esc(x.name)}"><img loading="lazy" src="img/t/${pad(x.id)}.webp" alt=""></button>`).join('');
   const vs=p.v;
-  $('vars').innerHTML=vs.length?`<h4>${vs.length>1?'اختر الصنف المطلوب ('+vs.length+')':'رقم الصنف'}</h4><ul class="vlist">${vs.map((x,i)=>{const k=p.id+':'+i,on=list.includes(k);return `<li><span class="nm">${esc(x[0])}${x[3]?` <span class="sz">· ${esc(x[3])}</span>`:''}</span><span class="cd">${esc(x[1])}${x[2]?`<small>${esc(x[2])}</small>`:''}</span><button type="button" data-add="${k}" aria-pressed="${on}" aria-label="${on?'إزالة':'إضافة'} ${esc(x[0])} ${esc(x[3]||'')}">${on?'✓':'+'}</button></li>`}).join('')}</ul>`:'';
+  renderVars(p);
   $('vbody').scrollTop=0;
-  $('vwa').href=wa(`السلام عليكم، أبي أستفسر عن: ${p.name} (صفحة ${p.page} في الكتالوج)\n${pageUrl()}#p-${p.id}`);
+  $('vwa').href=wa(`السلام عليكم،\nأرغب بالاستفسار عن توفر وأسعار: *${p.name}*${p.v.length==1?`\nرقم الصنف: \u200E${p.v[0][1]}`:''}\n${pageUrl()}#p-${p.id}`);
   vstate();$('viewer').classList.add('on');document.body.style.overflow='hidden';
   [cur-1,cur+1].forEach(k=>{if(shown[k]){const i=new Image();i.src=`img/f/${pad(shown[k].id)}.webp`}});
   if(push&&location.hash!=='#p-'+p.id)history.replaceState(null,'','#p-'+p.id);
@@ -449,7 +457,7 @@ function drawer(){
   const ul=$('dlist');ul.parentElement.querySelector('.none')?.remove();
   if(!list.length){ul.innerHTML='';ul.style.display='none';ul.insertAdjacentHTML('afterend','<div class="none"><b>القائمة فاضية</b>اضغط «أضف للاستفسار» على أي منتج.</div>');return}
   ul.style.display='';
-  ul.innerHTML=list.map((k,i)=>{const e=ent(k),p=e.p,n=entName(e),c=entCode(e);return `<li><img src="img/t/${pad(p.id)}.webp" alt=""><div><b>${i+1}. ${esc(n)}</b><span>${c?`<span class="cd">${esc(c)}</span> · `:''}${esc(CATS[p.cat].name)}</span><span class="qt" role="group" aria-label="الكمية"><button type="button" data-qd="${k}" aria-label="إنقاص الكمية">−</button><output>${q1(k)}</output><button type="button" data-qi="${k}" aria-label="زيادة الكمية">+</button></span></div><button type="button" class="rmv" data-rm="${k}" aria-label="إزالة ${esc(n)}">×</button></li>`}).join('');
+  ul.innerHTML=list.map((k,i)=>{const e=ent(k),p=e.p,n=entName(e),c=entCode(e);return `<li><img src="img/t/${pad(p.id)}.webp" alt=""><div><b>${i+1}. ${esc(n)}</b><span>${c?`<span class="cd">${esc(c)}</span> · `:''}${esc(CATS[p.cat].name)}</span>${stepper(k)}</div><button type="button" class="rmv" data-rm="${k}" aria-label="إزالة ${esc(n)}">×</button></li>`}).join('');
 }
 function openD(){drawer();$('drawer').classList.add('on');document.body.style.overflow='hidden';$('dclose').focus()}
 function closeD(){$('drawer').classList.remove('on');document.body.style.overflow=''}
@@ -462,7 +470,8 @@ document.addEventListener('click',e=>{
   const ch=t.closest('.chip');if(ch){setCat(+ch.dataset.c);return}
   const a=t.closest('[data-add]');if(a){toggle(a.dataset.add);return}
   const rm=t.closest('[data-rm]');if(rm){toggle(rm.dataset.rm);return}
-  const qi=t.closest('[data-qi],[data-qd]');if(qi){const k=qi.dataset.qi||qi.dataset.qd;qty[k]=Math.min(9999,Math.max(1,q1(k)+(qi.dataset.qi?1:-1)));saveQty();qi.parentElement.querySelector('output').textContent=qty[k];syncWa();return}
+  const qi=t.closest('[data-qi],[data-qd]');if(qi){const k=qi.dataset.qi||qi.dataset.qd;setQty(k,q1(k)+(qi.dataset.qi?1:-1));return}
+  if(t.closest('[data-qn]'))return;
   const o=t.closest('[data-open]');if(o){openV(+o.dataset.open);if(o.dataset.pick)setTimeout(()=>{const v=$('vars');v.scrollIntoView({block:'start'});v.classList.remove('flash');void v.offsetWidth;v.classList.add('flash')},120);return}
   if(t.closest('[data-reset]')){resetAll();return}
   if(t.closest('[data-openlist]')){openD();return}
@@ -494,6 +503,8 @@ document.addEventListener('keydown',e=>{
 });
 function fromHash(){const m=location.hash.match(/^#p-(\d+)$/);if(m&&BYID[+m[1]])openV(+m[1],false);else if(cur>-1)closeV()}
 window.addEventListener('hashchange',fromHash);
+document.addEventListener('input',e=>{const i=e.target.closest('[data-qn]');if(i&&i.value!=='')setQty(i.dataset.qn,i.value)});
+document.addEventListener('change',e=>{const i=e.target.closest('[data-qn]');if(i){setQty(i.dataset.qn,i.value);i.value=q1(i.dataset.qn)}});
 syncWa();chips();render();$('lcount').textContent=$('lcount2').textContent=list.length;fromHash();
 </script>
 </body>
