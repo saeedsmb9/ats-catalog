@@ -197,8 +197,12 @@ footer .ctas{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .panel li b{display:block;font-size:14px;font-weight:500;line-height:1.45}
 .panel li .cd{direction:ltr;display:inline-block}
 .panel li span{font-size:12px;color:var(--muted)}
-.panel li button{width:34px;height:34px;border-radius:8px;color:var(--muted);font-size:20px}
-.panel li button:hover{background:#f6e3df;color:var(--red)}
+.panel li .rmv{width:34px;height:34px;border-radius:8px;color:var(--muted);font-size:20px;align-self:flex-start}
+.panel li .rmv:hover{background:#f6e3df;color:var(--red)}
+.panel li .qt{display:flex;width:max-content;align-items:center;gap:0;margin-top:6px;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--paper)}
+.panel li .qt button{width:30px;height:28px;font-size:16px;color:var(--ink)}
+.panel li .qt button:hover{background:#efe7db}
+.panel li .qt output{min-width:32px;text-align:center;font-size:13.5px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
 .panel .none{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--muted);padding:30px;gap:6px}
 .panel .none b{font-family:var(--display);font-size:20px;color:var(--ink)}
 .panel .act{padding:14px 20px 20px;border-top:1px solid var(--line);display:grid;grid-template-columns:2fr 1fr;gap:8px}
@@ -339,7 +343,27 @@ const WA='966546097810', wa=t=>`https://wa.me/${WA}?text=${encodeURIComponent(t)
 const ent=k=>{const [id,ix]=String(k).split(':');const p=BYID[+id];if(!p)return null;const v=ix!=null?p.v[+ix]:(p.v.length==1?p.v[0]:null);return {p,v,item:ix!=null}};
 const entName=e=>e.item?(e.v[0]+(e.v[3]?' – '+e.v[3]:'')):e.p.name;
 const entCode=e=>e.v?e.v[1]:'';
-const listText=()=>'السلام عليكم، أبي أستفسر عن المنتجات التالية من كتالوج شركة صالح حسن العطاس (ATS):\n\n'+list.map((k,i)=>{const e=ent(k);return `${i+1}. ${entName(e)}${entCode(e)?' – رقم الصنف '+entCode(e):' (صفحة '+e.p.page+')'}`}).join('\n');
+let qty={};try{qty=JSON.parse(localStorage.getItem('ats-qty')||'{}')}catch(e){}
+const q1=k=>Math.max(1,parseInt(qty[k])||1);
+const saveQty=()=>{try{localStorage.setItem('ats-qty',JSON.stringify(qty))}catch(e){}};
+const LRM='‎';
+const nAs=n=>n>=3&&n<=10?n+' أصناف':n==2?'صنفين':n+' صنف';
+const varLabel=(p,x)=>{const n=x[0],b=p.name;let l=n.startsWith(b)?n.slice(b.length).replace(/^[\s–-]+/,''):n;if(x[3])l=l?l+' – '+x[3]:x[3];return l||n};
+const listText=()=>{
+  const L=['السلام عليكم،','أرغب بالاستفسار عن توفر وأسعار المنتجات التالية من كتالوج شركة صالح حسن العطاس:',''];
+  list.forEach((k,i)=>{const e=ent(k),p=e.p;
+    if(e.item){L.push(`*${i+1}. ${p.name}*`);const lb=varLabel(p,e.v);if(lb&&lb!==p.name)L.push(`الصنف: ${lb}`);L.push(`رقم الصنف: ${LRM}${e.v[1]}`)}
+    else{L.push(`*${i+1}. ${p.name}*`);
+      if(p.v.length==1){if(p.v[0][3])L.push(`المقاس: ${p.v[0][3]}`);L.push(`رقم الصنف: ${LRM}${p.v[0][1]}`)}
+      else if(p.v.length<=6){L.push(`الأصناف المطلوبة: الكل (${nAs(p.v.length)})`);p.v.forEach(x=>L.push(`• ${varLabel(p,x)}: ${LRM}${x[1]}`))}
+      else L.push(`الأصناف المطلوبة: الكل (${nAs(p.v.length)}) – التفاصيل في الرابط`)}
+    L.push(`الكمية: ${q1(k)}`);
+    L.push(`${pageUrl()}#p-${p.id}`);
+    L.push('');
+  });
+  L.push(`إجمالي البنود: ${list.length}`);
+  return L.join('\n');
+};
 const pageUrl=()=>location.protocol.startsWith('http')&&!/claude|claudeusercontent/.test(location.host)?location.origin+location.pathname:'https://catalog.salehalattas.com/';
 function syncWa(){$('dwa').href=list.length?wa(listText()):wa('السلام عليكم، أبي أستفسر عن منتجاتكم.')}
 let list=[];try{list=JSON.parse(localStorage.getItem('ats-list')||'[]').map(String).filter(k=>ent(k))}catch(e){}
@@ -363,7 +387,7 @@ function hl(name){
 const addLabel=on=>on?'✓ في القائمة':'+ أضف للاستفسار';
 function card(p){
   const on=list.includes(String(p.id));
-  return `<article class="card"><button class="open" type="button" data-open="${p.id}"><div class="ph"><img loading="lazy" src="img/t/${pad(p.id)}.webp" alt="${esc(p.name)}"></div><div class="meta"><span class="cat"><span class="num">${two(p.cat)}</span>${esc(CATS[p.cat].name)}</span><b>${hl(p.name)}</b>${p.v.length>1?`<span class="vn">${p.v.length} أصناف</span>`:''}</div></button><button class="add" type="button" data-add="${p.id}" aria-pressed="${on}">${addLabel(on)}</button></article>`;
+  return `<article class="card"><button class="open" type="button" data-open="${p.id}"><div class="ph"><img loading="lazy" src="img/t/${pad(p.id)}.webp" alt="${esc(p.name)}"></div><div class="meta"><span class="cat"><span class="num">${two(p.cat)}</span>${esc(CATS[p.cat].name)}</span><b>${hl(p.name)}</b>${p.v.length>1?`<span class="vn">${nAs(p.v.length)}</span>`:''}</div></button><button class="add" type="button" data-add="${p.id}" aria-pressed="${on}">${addLabel(on)}</button></article>`;
 }
 function render(){
   const words=norm(q).split(' ').filter(Boolean);
@@ -415,7 +439,7 @@ function drawer(){
   const ul=$('dlist');ul.parentElement.querySelector('.none')?.remove();
   if(!list.length){ul.innerHTML='';ul.style.display='none';ul.insertAdjacentHTML('afterend','<div class="none"><b>القائمة فاضية</b>اضغط «أضف للاستفسار» على أي منتج.</div>');return}
   ul.style.display='';
-  ul.innerHTML=list.map((k,i)=>{const e=ent(k),p=e.p,n=entName(e),c=entCode(e);return `<li><img src="img/t/${pad(p.id)}.webp" alt=""><div><b>${i+1}. ${esc(n)}</b><span>${c?`<span class="cd">${esc(c)}</span> · `:''}${esc(CATS[p.cat].name)}</span></div><button type="button" data-rm="${k}" aria-label="إزالة ${esc(n)}">×</button></li>`}).join('');
+  ul.innerHTML=list.map((k,i)=>{const e=ent(k),p=e.p,n=entName(e),c=entCode(e);return `<li><img src="img/t/${pad(p.id)}.webp" alt=""><div><b>${i+1}. ${esc(n)}</b><span>${c?`<span class="cd">${esc(c)}</span> · `:''}${esc(CATS[p.cat].name)}</span><span class="qt" role="group" aria-label="الكمية"><button type="button" data-qd="${k}" aria-label="إنقاص الكمية">−</button><output>${q1(k)}</output><button type="button" data-qi="${k}" aria-label="زيادة الكمية">+</button></span></div><button type="button" class="rmv" data-rm="${k}" aria-label="إزالة ${esc(n)}">×</button></li>`}).join('');
 }
 function openD(){drawer();$('drawer').classList.add('on');document.body.style.overflow='hidden';$('dclose').focus()}
 function closeD(){$('drawer').classList.remove('on');document.body.style.overflow=''}
@@ -428,6 +452,7 @@ document.addEventListener('click',e=>{
   const ch=t.closest('.chip');if(ch){setCat(+ch.dataset.c);return}
   const a=t.closest('[data-add]');if(a){toggle(a.dataset.add);return}
   const rm=t.closest('[data-rm]');if(rm){toggle(rm.dataset.rm);return}
+  const qi=t.closest('[data-qi],[data-qd]');if(qi){const k=qi.dataset.qi||qi.dataset.qd;qty[k]=Math.min(9999,Math.max(1,q1(k)+(qi.dataset.qi?1:-1)));saveQty();qi.parentElement.querySelector('output').textContent=qty[k];syncWa();return}
   const o=t.closest('[data-open]');if(o){openV(+o.dataset.open);return}
   if(t.closest('[data-reset]')){resetAll();return}
   if(t.closest('[data-openlist]')){openD();return}
@@ -446,7 +471,7 @@ let sx=null;$('vstage').addEventListener('touchstart',e=>{sx=e.touches[0].client
 $('vstage').addEventListener('touchend',e=>{if(sx==null)return;const dx=e.changedTouches[0].clientX-sx;sx=null;if(Math.abs(dx)>50)step(dx>0?1:-1)});
 $('openList').onclick=openD;$('dclose').onclick=closeD;
 $('drawer').addEventListener('click',e=>{if(e.target.id==='drawer')closeD()});
-$('dclear').onclick=()=>{if(!list.length)return;list=[];save();counts();render();drawer();toast('تم تفريغ القائمة')};
+$('dclear').onclick=()=>{if(!list.length)return;list=[];qty={};saveQty();save();counts();render();drawer();toast('تم تفريغ القائمة')};
 $('dcopy').onclick=()=>{if(!list.length){toast('أضف منتجات للقائمة أولاً');return}
   copy(listText(),'تم نسخ القائمة')};
 document.addEventListener('keydown',e=>{
