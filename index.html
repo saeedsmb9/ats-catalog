@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>كتالوج منتجات ATS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: a trade-showroom catalog. Dark ember hero with the chef-hat mark, a numbered Kufi index of the 14 departments as image tiles,
+   then the product floor grouped by department; a split product viewer and an enquiry list open on top. One warm brand world, light only. */
+:root{
+  --ember:#1d1411; --ember-2:#2b1d18; --red:#b0141d; --red-deep:#76090f; --gold:#c9a24a; --gold-hi:#ecd18a;
+  --paper:#f6f0e7; --card:#fffdf9; --ink:#231a16; --muted:#7a6a5c; --line:#e6dac7;
+  --display:"Reem Kufi","Noto Kufi Arabic",Tahoma,sans-serif;
+  --body:"IBM Plex Sans Arabic","Segoe UI",Tahoma,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--paper);color:var(--ink);font-family:var(--body);-webkit-text-size-adjust:100%}
+body{line-height:1.55}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+a{color:inherit}
+img{max-width:100%;display:block}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:10px}
+.wrap{max-width:1280px;margin:0 auto;padding:0 20px}
+.num{font-family:var(--display);font-variant-numeric:tabular-nums}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:30;background:rgba(29,20,17,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#fff;border-bottom:1px solid rgba(201,162,74,.25)}
+.top .wrap{display:flex;align-items:center;gap:16px;height:68px}
+.mark{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.mark .disc{width:46px;height:46px;border-radius:50%;background:var(--paper);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px var(--gold)}
+.mark .disc img{width:40px}
+.mark b{font-family:var(--display);font-size:20px;font-weight:700;letter-spacing:.5px;line-height:1}
+.mark small{display:block;font-size:11.5px;color:var(--gold-hi);opacity:.85;margin-top:3px}
+.search{position:relative;flex:1;max-width:520px;margin-inline-start:auto}
+.search input{width:100%;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);color:#fff;padding:0 44px 0 40px;font-size:15.5px;transition:background .15s,border-color .15s}
+.search input::placeholder{color:rgba(255,255,255,.5)}
+.search input:focus{outline:none;background:#fff;color:var(--ink);border-color:var(--gold)}
+.search input:focus::placeholder{color:#a0907f}
+.search svg{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.6);pointer-events:none}
+.search input:focus~svg{color:var(--muted)}
+.search .clr{position:absolute;left:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:8px;display:none;color:var(--muted);font-size:20px;line-height:28px}
+.search.has .clr{display:block}
+.enq{flex-shrink:0;height:44px;padding:0 16px;border-radius:12px;background:var(--red);color:#fff;font-weight:700;font-size:14.5px;display:flex;align-items:center;gap:9px;transition:background .15s}
+.enq:hover{background:#c71a24}
+.enq .n{min-width:24px;height:24px;border-radius:7px;background:var(--gold-hi);color:var(--red-deep);display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;padding:0 5px}
+.enq .n.bump{animation:bump .35s}
+@keyframes bump{40%{transform:scale(1.35)}}
+
+/* hero */
+.hero{position:relative;background:radial-gradient(120% 140% at 15% 0%,#5a1015 0,transparent 55%),radial-gradient(90% 120% at 100% 100%,#3a120f 0,transparent 60%),var(--ember);color:#fff;overflow:hidden}
+.hero:after{content:"";position:absolute;inset:auto 0 0 0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),var(--gold-hi),var(--gold),transparent)}
+.hero .wrap{display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;padding-top:48px;padding-bottom:52px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;color:var(--gold-hi);font-size:14px;font-weight:600;letter-spacing:.3px}
+.eyebrow:before{content:"";width:28px;height:2px;background:var(--gold)}
+.hero h1{font-family:var(--display);font-weight:700;font-size:clamp(38px,6.2vw,74px);line-height:1.12;margin:14px 0 14px;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--gold-hi)}
+.hero p{font-size:17px;color:rgba(255,255,255,.78);max-width:44ch}
+.stats{display:flex;gap:30px;margin-top:28px;flex-wrap:wrap}
+.stats div{border-inline-start:2px solid var(--gold);padding-inline-start:12px}
+.stats b{display:block;font-family:var(--display);font-size:34px;line-height:1;color:#fff}
+.stats span{font-size:13px;color:rgba(255,255,255,.65)}
+.medal{width:min(340px,30vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 50% 40%,#fffaf2 0,#f3e8d8 70%);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 6px rgba(201,162,74,.35),0 0 0 14px rgba(201,162,74,.08),0 30px 60px -20px rgba(0,0,0,.6)}
+.medal img{width:80%}
+
+/* department index */
+.dept{padding:56px 0 18px}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px}
+.head h2{font-family:var(--display);font-size:clamp(26px,3.2vw,36px);font-weight:700;line-height:1.2}
+.head p{color:var(--muted);font-size:14.5px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.tile{position:relative;display:block;width:100%;text-align:start;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:var(--ember);color:#fff;isolation:isolate}
+.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.04);transition:transform .5s ease,opacity .3s;opacity:.62;z-index:-2}
+.tile:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(20,12,10,.94) 18%,rgba(20,12,10,.2) 70%);z-index:-1}
+.tile:hover img{transform:scale(1.1);opacity:.75}
+.tile .no{position:absolute;top:12px;right:14px;font-family:var(--display);font-size:34px;font-weight:700;color:var(--gold-hi);line-height:1;text-shadow:0 2px 10px rgba(0,0,0,.4)}
+.tile .tx{position:absolute;inset:auto 16px 14px 16px}
+.tile .tx b{display:block;font-family:var(--display);font-size:19px;font-weight:600;line-height:1.3;text-wrap:balance}
+.tile .tx span{font-size:13px;color:rgba(255,255,255,.72)}
+.tile .go{position:absolute;bottom:16px;left:16px;width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;font-size:16px;transition:background .2s,border-color .2s}
+.tile:hover .go{background:var(--red);border-color:var(--red)}
+
+/* product floor */
+.floor{padding:34px 0 70px}
+.rail{position:sticky;top:68px;z-index:20;background:rgba(246,240,231,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);margin-bottom:8px}
+.rail .wrap{display:flex;gap:8px;overflow-x:auto;padding-top:10px;padding-bottom:10px;scrollbar-width:none}
+.rail .wrap::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;height:36px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:var(--card);font-size:14px;font-weight:600;display:flex;align-items:center;gap:7px;white-space:nowrap;transition:border-color .15s}
+.chip:hover{border-color:var(--gold)}
+.chip i{font-style:normal;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip[aria-pressed="true"] i{color:var(--gold-hi)}
+.status{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--muted);font-size:14px;padding:14px 0 4px;flex-wrap:wrap}
+.status b{color:var(--ink)}
+.status .reset{color:var(--red);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.sec{padding-top:34px;scroll-margin-top:130px}
+.sech{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+.sech .big{font-family:var(--display);font-size:54px;font-weight:700;line-height:.9;color:transparent;-webkit-text-stroke:1.5px var(--gold)}
+.sech h3{font-family:var(--display);font-size:26px;font-weight:700;line-height:1.25;text-wrap:balance}
+.sech small{display:block;font-family:var(--body);font-size:13.5px;font-weight:500;color:var(--muted)}
+.sech:after{content:"";flex:1;height:1px;background:var(--line);margin-inline-start:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s,border-color .2s}
+.card:hover{transform:translateY(-3px);border-color:#d9c7a6;box-shadow:0 18px 30px -18px rgba(70,30,10,.4)}
+.card .open{display:flex;flex-direction:column;text-align:start;flex:1}
+.card .ph{aspect-ratio:1;background:#efe7db;padding:10px;display:flex;align-items:center;justify-content:center}
+.card .ph img{width:100%;height:100%;object-fit:contain;border-radius:8px;transition:transform .35s}
+.card:hover .ph img{transform:scale(1.03)}
+.card .meta{padding:12px 14px 4px;display:flex;flex-direction:column;gap:4px;flex:1}
+.card .cat{font-size:12px;color:var(--red);font-weight:600}
+.card .cat .num{color:var(--gold);margin-inline-end:4px}
+.card .meta b{font-size:15.5px;font-weight:700;line-height:1.4}
+.card .add{margin:10px 14px 14px;height:38px;border-radius:10px;border:1px solid var(--line);font-size:13.5px;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s,border-color .15s,color .15s}
+.card .add:hover{border-color:var(--red);color:var(--red)}
+.card .add[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff}
+mark{background:var(--gold-hi);color:inherit;border-radius:3px;padding:0 1px}
+.empty{text-align:center;padding:70px 16px;color:var(--muted)}
+.empty b{display:block;font-family:var(--display);font-size:24px;color:var(--ink);margin-bottom:8px}
+.empty button{margin-top:16px;height:42px;padding:0 18px;border-radius:10px;background:var(--ink);color:#fff;font-weight:700}
+
+/* footer */
+footer{background:var(--ember);color:rgba(255,255,255,.75);padding:44px 0 36px}
+footer .wrap{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+footer .mark .disc{width:56px;height:56px}footer .mark .disc img{width:48px}
+footer .mark b{color:#fff}
+footer p{flex:1;min-width:240px;font-size:14.5px;max-width:52ch}
+footer .enq{background:var(--gold);color:var(--ember)}
+footer .enq .n{background:var(--ember);color:var(--gold-hi)}
+
+/* overlays */
+.ov{position:fixed;inset:0;z-index:60;display:none}
+.ov.on{display:flex}
+.viewer{background:rgba(18,11,9,.92)}
+.vbox{margin:auto;width:min(1200px,100%);height:min(860px,100%);display:grid;grid-template-columns:1fr 380px;background:var(--ember);border-radius:20px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.5)}
+.vstage{position:relative;display:flex;align-items:center;justify-content:center;padding:28px 70px;min-height:0;touch-action:pan-y;background:radial-gradient(circle at 50% 45%,#3b2620 0,var(--ember) 70%)}
+.vstage img{max-width:100%;max-height:100%;object-fit:contain;border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,.5);background:#fff}
+.nav{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;font-size:26px;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.nav:hover{background:var(--red)}
+.nav.prev{right:14px}.nav.next{left:14px}
+.vside{background:var(--paper);display:flex;flex-direction:column;min-height:0}
+.vhead{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+.vcount{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.x{width:38px;height:38px;border-radius:10px;background:var(--card);border:1px solid var(--line);font-size:22px;line-height:1;display:flex;align-items:center;justify-content:center}
+.vbody{padding:22px 20px;overflow:auto;flex:1}
+.vcat{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--red);background:#f6e3df;border-radius:8px;padding:5px 10px}
+.vbody h2{font-family:var(--display);font-size:28px;font-weight:700;line-height:1.3;margin:12px 0 8px;text-wrap:balance}
+.vpage{font-size:13.5px;color:var(--muted)}
+.vact{display:flex;flex-direction:column;gap:10px;margin:22px 0 26px}
+.btn{height:48px;border-radius:12px;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s,border-color .15s}
+.btn.p{background:var(--red);color:#fff}.btn.p:hover{background:#c71a24}
+.btn.p.on{background:var(--ink)}
+.btn.s{background:var(--card);border:1px solid var(--line)}.btn.s:hover{border-color:var(--gold)}
+.btn.wa,.wa-btn{background:#1f9d55;color:#fff;text-decoration:none}.btn.wa:hover,.wa-btn:hover{background:#178a49}
+.wa-btn{height:48px;padding:0 20px;border-radius:12px;font-weight:700;font-size:15px;display:inline-flex;align-items:center;gap:9px;transition:background .15s}
+.cta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:30px}
+.cta .tel{color:rgba(255,255,255,.7);font-size:14px}.cta .tel b{color:#fff;font-weight:600;letter-spacing:.5px;direction:ltr;unicode-bidi:isolate}
+footer .tel{font-size:14px;color:rgba(255,255,255,.7)}footer .tel b{color:#fff;direction:ltr;unicode-bidi:isolate;letter-spacing:.5px}
+footer .ctas{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.rel h4{font-size:13.5px;font-weight:700;color:var(--muted);margin-bottom:10px}
+.rel div{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rel button{aspect-ratio:1;border-radius:10px;overflow:hidden;background:#efe7db;border:2px solid transparent;padding:4px;transition:border-color .15s}
+.rel button:hover{border-color:var(--gold)}
+.rel img{width:100%;height:100%;object-fit:contain}
+.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,16px);background:var(--ink);color:#fff;padding:11px 20px;border-radius:12px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:.2s;z-index:90;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+.drawer{background:rgba(18,11,9,.55);justify-content:flex-start}
+.panel{background:var(--paper);width:min(430px,100%);height:100%;display:flex;flex-direction:column;box-shadow:-20px 0 40px rgba(0,0,0,.25)}
+.panel header{display:flex;align-items:center;gap:12px;padding:20px;background:var(--ember);color:#fff}
+.panel header h2{flex:1;font-family:var(--display);font-size:24px;font-weight:700}
+.panel header .x{background:rgba(255,255,255,.1);border-color:transparent;color:#fff}
+.panel .hint{padding:14px 20px 4px;font-size:14px;color:var(--muted);line-height:1.7}
+.panel ul{list-style:none;flex:1;overflow:auto;padding:10px 20px;display:flex;flex-direction:column;gap:8px}
+.panel li{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 6px 6px 8px}
+.panel li img{width:58px;height:58px;object-fit:contain;border-radius:8px;background:#efe7db}
+.panel li div{flex:1;min-width:0}
+.panel li b{display:block;font-size:14.5px;line-height:1.4}
+.panel li span{font-size:12px;color:var(--muted)}
+.panel li button{width:34px;height:34px;border-radius:8px;color:var(--muted);font-size:20px}
+.panel li button:hover{background:#f6e3df;color:var(--red)}
+.panel .none{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--muted);padding:30px;gap:6px}
+.panel .none b{font-family:var(--display);font-size:20px;color:var(--ink)}
+.panel .act{padding:14px 20px 20px;border-top:1px solid var(--line);display:grid;grid-template-columns:2fr 1fr;gap:8px}
+.panel .act .wa{grid-column:1/-1}
+.panel .act .num-note{grid-column:1/-1;text-align:center;font-size:12.5px;color:var(--muted)}
+
+@media (max-width:900px){
+  .vbox{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto;border-radius:0;height:100%}
+  .vstage{padding:14px 10px 70px}
+  .nav{top:auto;bottom:12px;transform:none}
+  .vside{max-height:46vh}
+  .vbody{padding:16px 18px}
+  .vbody h2{font-size:22px;margin:8px 0 4px}
+  .vact{display:grid;grid-template-columns:1fr 1fr;margin:14px 0 18px}.vact .btn{height:44px;font-size:14px}.vact #vlink{grid-column:1/-1;height:38px;font-size:13px}
+  .rel div{grid-template-columns:repeat(4,1fr)}
+}
+@media (max-width:720px){
+  .top .wrap{height:auto;flex-wrap:wrap;padding-top:10px;padding-bottom:10px;gap:10px}
+  .mark small{display:none}
+  .search{order:3;flex-basis:100%;max-width:none}
+  .enq{margin-inline-start:auto;height:40px;padding:0 12px;font-size:13.5px}
+  .rail{top:118px}
+  .hero .wrap{grid-template-columns:1fr;gap:26px;padding-top:30px;padding-bottom:34px}
+  .medal{order:-1;width:150px}
+  .hero p{font-size:15.5px}
+  .stats{gap:20px}.stats b{font-size:28px}
+  .dept{padding-top:38px}
+  .tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .tile{aspect-ratio:1}
+  .tile .no{font-size:26px}
+  .tile .tx b{font-size:15.5px}
+  .tile .go{display:none}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .card .meta{padding:10px 10px 2px}
+  .card .meta b{font-size:14px}
+  .card .add{margin:8px 10px 10px;height:36px;font-size:12.5px}
+  .sech .big{font-size:40px}.sech h3{font-size:21px}
+  .sec{scroll-margin-top:180px}
+}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#" id="home"><span class="disc"><img src="img/logo.webp" alt=""></span><span><b>ATS</b><small>شركة صالح حسن العطاس</small></span></a>
+    <label class="search" id="sbox">
+      <input id="q" type="search" placeholder="ابحث عن منتج: صينية، سكين، كتشب، سخان…" autocomplete="off" aria-label="ابحث عن منتج">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <button class="clr" id="qclr" type="button" aria-label="مسح البحث">×</button>
+    </label>
+    <button class="enq" id="openList" type="button">قائمة الاستفسار <span class="n" id="lcount">0</span></button>
+  </div>
+</header>
+
+<section class="hero" id="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">شركة صالح حسن العطاس · كتالوج 2026</span>
+      <h1>تجهيزات <em>المطابخ</em><br>والمطاعم والبوفيهات</h1>
+      <p>تصفّح منتجاتنا حسب القسم، كبّر أي بطاقة لترى المقاسات وأرقام الأصناف، واجمع ما تحتاجه في قائمة استفسار ترسلها لنا.</p>
+      <div class="cta"><a class="wa-btn" id="heroWa" href="https://wa.me/966505432134" target="_blank" rel="noopener"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3Z"/></svg>تواصل معنا بالواتساب</a><span class="tel">أو اتصل: <b>0505432134</b></span></div>
+      <div class="stats"><div><b id="st1">150</b><span>منتج</span></div><div><b id="st2">14</b><span>قسمًا</span></div></div>
+    </div>
+    <div class="medal"><img src="img/logo.webp" alt="شعار شركة صالح حسن العطاس ATS"></div>
+  </div>
+</section>
+
+<section class="dept wrap" id="dept" aria-labelledby="deptTitle">
+  <div class="head"><h2 id="deptTitle">الأقسام</h2><p>اختر قسمًا لعرض منتجاته</p></div>
+  <div class="tiles" id="tiles"></div>
+</section>
+
+<section class="floor" id="floor">
+  <nav class="rail" aria-label="تصفية حسب القسم"><div class="wrap" id="chips"></div></nav>
+  <div class="wrap">
+    <div class="status" id="status"></div>
+    <div id="out"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="mark"><span class="disc"><img src="img/logo.webp" alt=""></span><span><b>شركة صالح حسن العطاس</b><small>ATS</small></span></span>
+    <p>أضف المنتجات التي تهمك إلى قائمة الاستفسار وأرسلها لنا بالواتساب بضغطة واحدة، ونرد عليك بالتوفر والأسعار.</p>
+    <div class="ctas"><a class="wa-btn" href="https://wa.me/966505432134" target="_blank" rel="noopener"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3Z"/></svg>واتساب</a><button class="enq" type="button" data-openlist>قائمة الاستفسار <span class="n" id="lcount2">0</span></button><span class="tel">الجوال: <b>0505432134</b></span></div>
+  </div>
+</footer>
+
+<div class="ov viewer" id="viewer" role="dialog" aria-modal="true" aria-labelledby="vname">
+  <div class="vbox">
+    <div class="vstage" id="vstage">
+      <button class="nav prev" id="vprev" type="button" aria-label="المنتج السابق">›</button>
+      <img id="vpic" alt="">
+      <button class="nav next" id="vnext" type="button" aria-label="المنتج التالي">‹</button>
+    </div>
+    <aside class="vside">
+      <div class="vhead"><span class="vcount" id="vcount"></span><button class="x" id="vclose" type="button" aria-label="إغلاق">×</button></div>
+      <div class="vbody">
+        <button class="vcat" id="vcat" type="button"></button>
+        <h2 id="vname"></h2>
+        <div class="vpage" id="vpage"></div>
+        <div class="vact">
+          <button class="btn p" id="vadd" type="button"></button>
+          <a class="btn wa" id="vwa" href="https://wa.me/966505432134" target="_blank" rel="noopener"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3Z"/></svg>استفسر بالواتساب</a>
+          <button class="btn s" id="vlink" type="button">نسخ رابط المنتج</button>
+        </div>
+        <div class="rel"><h4>من نفس القسم</h4><div id="vrel"></div></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="ov drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dtitle">
+  <div class="panel">
+    <header><h2 id="dtitle">قائمة الاستفسار</h2><button class="x" id="dclose" type="button" aria-label="إغلاق">×</button></header>
+    <p class="hint">أرسل القائمة لنا بالواتساب، ونرد عليك بالتوفر والأسعار.</p>
+    <ul id="dlist"></ul>
+    <div class="act"><a class="btn wa" id="dwa" href="https://wa.me/966505432134" target="_blank" rel="noopener"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3Z"/></svg>أرسل القائمة بالواتساب</a><button class="btn s" id="dcopy" type="button">نسخ القائمة</button><button class="btn s" id="dclear" type="button">تفريغ</button><span class="num-note">رقم الواتساب: <b dir="ltr">0505432134</b></span></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const DATA={"cats": [{"n": 1, "name": "أدوات الخدمة والغرف", "count": 10}, {"n": 2, "name": "السكاكين وأدوات القطع", "count": 8}, {"n": 3, "name": "تجهيز اللحوم والبرجر", "count": 6}, {"n": 4, "name": "أدوات التحضير", "count": 14}, {"n": 5, "name": "الزبادي والمصافي وأدوات القياس", "count": 11}, {"n": 6, "name": "الصواني وقوالب الخبز", "count": 13}, {"n": 7, "name": "الشبك", "count": 5}, {"n": 8, "name": "مستلزمات الحلويات والمخبوزات", "count": 15}, {"n": 9, "name": "علب الكتشب والصوصات", "count": 12}, {"n": 10, "name": "الحفظ والتخزين", "count": 9}, {"n": 11, "name": "البوفيه والضيافة", "count": 20}, {"n": 12, "name": "الكافيه والبار", "count": 10}, {"n": 13, "name": "التنظيم والعربات", "count": 8}, {"n": 14, "name": "النظافة والتغليف", "count": 9}], "items": [{"id": 0, "name": "أدوات خدمة استيل", "cat": 1, "page": 4}, {"id": 1, "name": "أدوات خدمة استيل ذهبي (قصير)", "cat": 1, "page": 5}, {"id": 2, "name": "أدوات خدمة استيل يد سيلكون", "cat": 1, "page": 6}, {"id": 3, "name": "أدوات خدمة استيل (قصير)", "cat": 1, "page": 7}, {"id": 4, "name": "أدوات خدمة استيل يد مبروم مطفي", "cat": 1, "page": 8}, {"id": 13, "name": "كبشة وملاس المنيوم", "cat": 1, "page": 9}, {"id": 103, "name": "ملاعق غرف استيل ثقيل", "cat": 1, "page": 10}, {"id": 104, "name": "ملاعقة قلاب استيل كبير", "cat": 1, "page": 11}, {"id": 105, "name": "ملاعقة قلاب استيل صغير", "cat": 1, "page": 12}, {"id": 155, "name": "ملقاط استيل بوفيه", "cat": 1, "page": 13}, {"id": 25, "name": "مجموعة مسن سكاكين", "cat": 2, "page": 15}, {"id": 26, "name": "مجموعة سكاكين خبز", "cat": 2, "page": 16}, {"id": 27, "name": "مجموعة سواطير استيل ثقيل", "cat": 2, "page": 17}, {"id": 28, "name": "مجموعة سكاكين استيل", "cat": 2, "page": 18}, {"id": 52, "name": "مغناطيس سكاكين استيل كامل", "cat": 2, "page": 19}, {"id": 64, "name": "مقص دجاج استيل", "cat": 2, "page": 20}, {"id": 47, "name": "قطاعة ملوخية", "cat": 2, "page": 21}, {"id": 150, "name": "لوح تقطيع استيل", "cat": 2, "page": 22}, {"id": 10, "name": "مدق بوفتيك", "cat": 3, "page": 24}, {"id": 32, "name": "مكبس برجر استيل (مربع ودائري)", "cat": 3, "page": 25}, {"id": 153, "name": "مكبس برجر استيل (8 / 10 / 12 سم)", "cat": 3, "page": 26}, {"id": 51, "name": "إبرة حراق", "cat": 3, "page": 27}, {"id": 87, "name": "جونتي جزار استيل", "cat": 3, "page": 28}, {"id": 95, "name": "جونتي استيل خفيف", "cat": 3, "page": 29}, {"id": 37, "name": "ملعقة ايسكريم", "cat": 4, "page": 31}, {"id": 38, "name": "هراسة بطاطس", "cat": 4, "page": 32}, {"id": 39, "name": "مبشرة جبن", "cat": 4, "page": 33}, {"id": 41, "name": "قطاعة بيض", "cat": 4, "page": 34}, {"id": 42, "name": "مفك علب وفتاحة علب وهراسة ثوم", "cat": 4, "page": 35}, {"id": 44, "name": "قشارة بطاطس استيل", "cat": 4, "page": 36}, {"id": 45, "name": "قطاعة بيتزا ومسّاكة صواني وأطقم معيار", "cat": 4, "page": 37}, {"id": 48, "name": "عصارة ليمون استيل", "cat": 4, "page": 38}, {"id": 146, "name": "قطاعة بطاطس استيل", "cat": 4, "page": 39}, {"id": 156, "name": "نشافة خضار", "cat": 4, "page": 40}, {"id": 43, "name": "جاروف بطاطس", "cat": 4, "page": 41}, {"id": 49, "name": "جاروف المنيوم (مقاس 24 و 35)", "cat": 4, "page": 42}, {"id": 50, "name": "جاروف المنيوم (24 – 85 أونز)", "cat": 4, "page": 43}, {"id": 31, "name": "موزع حوض زبدة", "cat": 4, "page": 44}, {"id": 54, "name": "طقم زبدية استيل", "cat": 5, "page": 46}, {"id": 151, "name": "زبدية استيل", "cat": 5, "page": 47}, {"id": 53, "name": "شنوار استيل", "cat": 5, "page": 48}, {"id": 59, "name": "منخل استيل خشن", "cat": 5, "page": 49}, {"id": 125, "name": "مصفى عصير يد أسود", "cat": 5, "page": 50}, {"id": 58, "name": "مضرب بيض استيل طويل", "cat": 5, "page": 51}, {"id": 60, "name": "مضرب بيض استيل", "cat": 5, "page": 52}, {"id": 61, "name": "جك معيار استيل يد مفتوح", "cat": 5, "page": 53}, {"id": 63, "name": "جك استيل بمقياس داخلي", "cat": 5, "page": 54}, {"id": 123, "name": "ترمومتر قلم إلكتروني", "cat": 5, "page": 55}, {"id": 124, "name": "ترمومتر حرارة قلم", "cat": 5, "page": 56}, {"id": 5, "name": "صندوق توست المنيوم تيفال", "cat": 6, "page": 58}, {"id": 7, "name": "صندوق توست المنيوم كامل", "cat": 6, "page": 59}, {"id": 14, "name": "صينية صامولي", "cat": 6, "page": 60}, {"id": 15, "name": "صينية استيل", "cat": 6, "page": 61}, {"id": 16, "name": "صينية ألمنيوم مائل", "cat": 6, "page": 62}, {"id": 17, "name": "صينية ألمنيوم", "cat": 6, "page": 63}, {"id": 18, "name": "صينية ألمنيوم ملفوف", "cat": 6, "page": 64}, {"id": 19, "name": "صينية ألمنيوم مخرم", "cat": 6, "page": 65}, {"id": 20, "name": "صينية ألمنيوم 35×35 و 40×40", "cat": 6, "page": 66}, {"id": 21, "name": "صينية ألمنيوم 40×30", "cat": 6, "page": 67}, {"id": 24, "name": "صينية ألمنيوم 60×40", "cat": 6, "page": 68}, {"id": 22, "name": "صواني بيتزا", "cat": 6, "page": 69}, {"id": 9, "name": "شبك بيتزا", "cat": 6, "page": 70}, {"id": 8, "name": "شبك حوض استيل", "cat": 7, "page": 72}, {"id": 11, "name": "شبك تبريد 60×40 استيل", "cat": 7, "page": 73}, {"id": 12, "name": "شبك تبريد 60×40 بدون رجل", "cat": 7, "page": 74}, {"id": 35, "name": "شبك تبريد استيل ثقيل بأرجل", "cat": 7, "page": 75}, {"id": 36, "name": "شبك تبريد استيل ثقيل", "cat": 7, "page": 76}, {"id": 29, "name": "مصب حلويات استيل", "cat": 8, "page": 78}, {"id": 40, "name": "قطاعة عجين استيل", "cat": 8, "page": 79}, {"id": 69, "name": "مفرش سيلكون (دوائر)", "cat": 8, "page": 80}, {"id": 72, "name": "مفرش سيلكون ماكرون", "cat": 8, "page": 81}, {"id": 80, "name": "مفرش سيلكون", "cat": 8, "page": 82}, {"id": 89, "name": "استاند كيك دوار استيل", "cat": 8, "page": 83}, {"id": 90, "name": "فرشة زيت بلاستيك", "cat": 8, "page": 84}, {"id": 99, "name": "فرشة زيت بلاستيك (برتقالي)", "cat": 8, "page": 85}, {"id": 91, "name": "سباتول سيلكون أبيض", "cat": 8, "page": 86}, {"id": 92, "name": "فرشة سيلكون بيضاء", "cat": 8, "page": 87}, {"id": 94, "name": "سكين مطبق استيل", "cat": 8, "page": 88}, {"id": 96, "name": "رنج مربع استيل", "cat": 8, "page": 89}, {"id": 97, "name": "رنج مستطيل استيل", "cat": 8, "page": 90}, {"id": 98, "name": "رنج استيل دائري", "cat": 8, "page": 91}, {"id": 33, "name": "مجموعة جونتي مطبخ", "cat": 8, "page": 92}, {"id": 78, "name": "علب كتشب بلاستيك بوز واحد – 8 أونز", "cat": 9, "page": 94}, {"id": 79, "name": "علب كتشب بلاستيك بوز واحد – 12 أونز", "cat": 9, "page": 95}, {"id": 81, "name": "علب كتشب بلاستيك بوز واحد – 16 أونز (450 مل)", "cat": 9, "page": 96}, {"id": 83, "name": "علب كتشب بلاستيك بوز واحد – 24 أونز", "cat": 9, "page": 97}, {"id": 85, "name": "علب كتشب بلاستيك – 32 أونز", "cat": 9, "page": 98}, {"id": 88, "name": "علب كتشب بلاستيك ثلاث بوز – 16 أونز", "cat": 9, "page": 99}, {"id": 84, "name": "علب كتشب بلاستيك ثلاث بوز – 24 أونز", "cat": 9, "page": 100}, {"id": 82, "name": "علب كتشب بلاستيك ثلاث بوز – 32 أونز", "cat": 9, "page": 101}, {"id": 74, "name": "علب كتشب بلاستيك بوز واحد – 16 أونز (473 مل)", "cat": 9, "page": 102}, {"id": 75, "name": "علب كتشب حراري بوز واحد – 24 أونز", "cat": 9, "page": 103}, {"id": 76, "name": "علب كتشب حراري بوز واحد – 36 أونز", "cat": 9, "page": 104}, {"id": 147, "name": "قوالب صوص استيل", "cat": 9, "page": 105}, {"id": 56, "name": "حاوية أرزاق أبيض", "cat": 10, "page": 107}, {"id": 86, "name": "حافظة بلاستيك محكمة الإغلاق", "cat": 10, "page": 108}, {"id": 118, "name": "تبرولة مربع بلاستيك", "cat": 10, "page": 109}, {"id": 119, "name": "أغطية تبرولة مربع بلاستيك", "cat": 10, "page": 110}, {"id": 135, "name": "تبرولة دائري بلاستيك", "cat": 10, "page": 111}, {"id": 129, "name": "أغطية تبرولة بلاستيك", "cat": 10, "page": 112}, {"id": 73, "name": "جك بلاستيك بغطاء أبيض", "cat": 10, "page": 113}, {"id": 139, "name": "جك بلاستيك بغطاء", "cat": 10, "page": 114}, {"id": 144, "name": "حافظة حليب استيل", "cat": 10, "page": 115}, {"id": 106, "name": "سخان بوفيه مستطيل بغطاء", "cat": 11, "page": 117}, {"id": 114, "name": "سخان بوفيه نصف ذهبي (S28-207)", "cat": 11, "page": 118}, {"id": 108, "name": "سخان بوفيه ذهبي كامل (S28-208)", "cat": 11, "page": 119}, {"id": 109, "name": "سخان بوفيه نصف ذهبي (S28-209)", "cat": 11, "page": 120}, {"id": 110, "name": "سخان بوفيه ذهبي كامل (S28-210)", "cat": 11, "page": 121}, {"id": 111, "name": "سخان بوفيه ذهبي كامل (S28-211)", "cat": 11, "page": 122}, {"id": 112, "name": "سخان بوفيه دائري (S28-212)", "cat": 11, "page": 123}, {"id": 113, "name": "سخان بوفيه دائري ذهبي كامل (S28-213)", "cat": 11, "page": 124}, {"id": 115, "name": "سخان بوفيه دائري (S28-215)", "cat": 11, "page": 125}, {"id": 116, "name": "سخان بوفيه دائري ذهبي (S28-216)", "cat": 11, "page": 126}, {"id": 121, "name": "سخان بوفيه دائري بنصف غطاء (S28-214)", "cat": 11, "page": 127}, {"id": 145, "name": "سخان شربة أسود كهربائي 10 لتر", "cat": 11, "page": 128}, {"id": 117, "name": "دلال قهوة فاخرة", "cat": 11, "page": 129}, {"id": 148, "name": "غطاء قلاب 1/1 بلاستيك", "cat": 11, "page": 130}, {"id": 107, "name": "سلة بطاطس استيل", "cat": 11, "page": 131}, {"id": 136, "name": "تبسي تقديم أسود", "cat": 11, "page": 132}, {"id": 157, "name": "استاند كروت 9×15 سم", "cat": 11, "page": 133}, {"id": 158, "name": "استاند كروت 9×10 سم", "cat": 11, "page": 134}, {"id": 160, "name": "طقم ملاحة استيل 3 قطع (S28-263)", "cat": 11, "page": 135}, {"id": 161, "name": "طقم ملاحة استيل 3 قطعة", "cat": 11, "page": 136}, {"id": 126, "name": "لمبة كافي", "cat": 12, "page": 138}, {"id": 138, "name": "مكب قهوة عمود بلاستيك", "cat": 12, "page": 139}, {"id": 120, "name": "شاكوش استيل صغير", "cat": 12, "page": 140}, {"id": 134, "name": "مفرش بار سيلكون", "cat": 12, "page": 141}, {"id": 57, "name": "كوب معيار استيل", "cat": 12, "page": 142}, {"id": 71, "name": "مخرز ثلج يد خشب", "cat": 12, "page": 143}, {"id": 55, "name": "رك كاسات دبل مائل 8 خانة", "cat": 12, "page": 144}, {"id": 68, "name": "رك كاسات مائل أربع خانة", "cat": 12, "page": 145}, {"id": 70, "name": "رك كاسات دورين", "cat": 12, "page": 146}, {"id": 62, "name": "استاند نكهات مائل حديد أربع خانة", "cat": 12, "page": 147}, {"id": 132, "name": "ستاند بلاستيك مقسم", "cat": 13, "page": 149}, {"id": 133, "name": "ستاند بلاستيك أسود", "cat": 13, "page": 150}, {"id": 140, "name": "رك ملاعق بلاستيك", "cat": 13, "page": 151}, {"id": 141, "name": "رك بلاستيك مقسم", "cat": 13, "page": 152}, {"id": 142, "name": "استاند ملاعق", "cat": 13, "page": 153}, {"id": 34, "name": "دبوس فواتير ثقيل", "cat": 13, "page": 154}, {"id": 143, "name": "عربة تقديم بلاستيك مقفل جوانب", "cat": 13, "page": 155}, {"id": 149, "name": "عربة تقديم استيل 3 دور", "cat": 13, "page": 156}, {"id": 122, "name": "سطل عربية بلاستيك صغير", "cat": 14, "page": 158}, {"id": 127, "name": "سطل عربية بلاستيك كبير", "cat": 14, "page": 159}, {"id": 154, "name": "سطل نفايات مروحة", "cat": 14, "page": 160}, {"id": 6, "name": "مجحاف تنظيف جرل المنيوم كامل", "cat": 14, "page": 161}, {"id": 100, "name": "مجموعة سكاكين تنظيف الجريل", "cat": 14, "page": 162}, {"id": 101, "name": "مجموعة فرش تنظيف الجريل", "cat": 14, "page": 163}, {"id": 128, "name": "مكينة تغليف استيل يدوي", "cat": 14, "page": 164}, {"id": 130, "name": "مكينة تغليف بلاستيك يدوي", "cat": 14, "page": 165}, {"id": 162, "name": "مكينة تغليف رول فايبر", "cat": 14, "page": 166}]};
+const $=s=>document.getElementById(s);
+const CATS=Object.fromEntries(DATA.cats.map(c=>[c.n,c]));
+const ITEMS=DATA.items, BYID=Object.fromEntries(ITEMS.map(p=>[p.id,p]));
+const norm=s=>s.replace(/[ً-ْـ]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/ؤ/g,'و').replace(/ئ/g,'ي').replace(/[×xX*]/g,'x').replace(/\s+/g,' ').toLowerCase().trim();
+ITEMS.forEach(p=>p.key=norm(p.name+' '+CATS[p.cat].name));
+const pad=n=>String(n).padStart(3,'0'), two=n=>String(n).padStart(2,'0');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const firstOf=c=>ITEMS.find(p=>p.cat==c);
+let cat=0,q='',shown=[],cur=-1;
+const WA='966505432134', wa=t=>`https://wa.me/${WA}?text=${encodeURIComponent(t)}`;
+const listText=()=>'السلام عليكم، أبي أستفسر عن المنتجات التالية من كتالوج شركة صالح حسن العطاس (ATS):\n\n'+list.map((id,i)=>`${i+1}. ${BYID[id].name} (صفحة ${BYID[id].page})`).join('\n');
+const pageUrl=()=>location.protocol.startsWith('http')?location.origin+location.pathname:'https://claude.ai/artifact/4HHxFyHsVjdZUY3DSnGM9q';
+function syncWa(){$('dwa').href=list.length?wa(listText()):wa('السلام عليكم، أبي أستفسر عن منتجاتكم.')}
+let list=[];try{list=JSON.parse(localStorage.getItem('ats-list')||'[]').filter(id=>BYID[id])}catch(e){}
+const save=()=>{try{localStorage.setItem('ats-list',JSON.stringify(list))}catch(e){}};
+$('st1').textContent=ITEMS.length;$('st2').textContent=DATA.cats.length;
+
+$('tiles').innerHTML=DATA.cats.map(c=>`<button class="tile" type="button" data-cat="${c.n}"><img loading="lazy" src="img/t/${pad(firstOf(c.n).id)}.webp" alt=""><span class="no">${two(c.n)}</span><span class="tx"><b>${esc(c.name)}</b><span>${c.count} منتج</span></span><span class="go" aria-hidden="true">←</span></button>`).join('');
+
+function chips(){
+  $('chips').innerHTML=`<button class="chip" type="button" data-c="0" aria-pressed="${cat==0}">كل الأقسام <i>${ITEMS.length}</i></button>`+DATA.cats.map(c=>`<button class="chip" type="button" data-c="${c.n}" aria-pressed="${cat==c.n}">${esc(c.name)} <i>${c.count}</i></button>`).join('');
+  const on=$('chips').querySelector('[aria-pressed="true"]');if(on&&cat)on.scrollIntoView({block:'nearest',inline:'center'});
+}
+function hl(name){
+  if(!q)return esc(name);
+  const words=norm(q).split(' ').filter(Boolean),n=norm(name);
+  if(n.length!==name.length)return esc(name);
+  const on=new Array(name.length).fill(false);
+  words.forEach(w=>{let i=n.indexOf(w);while(i>-1){for(let k=i;k<i+w.length;k++)on[k]=true;i=n.indexOf(w,i+w.length)}});
+  let o='',m=false;for(let i=0;i<name.length;i++){if(on[i]&&!m){o+='<mark>';m=true}if(!on[i]&&m){o+='</mark>';m=false}o+=esc(name[i])}if(m)o+='</mark>';return o;
+}
+const addLabel=on=>on?'✓ في القائمة':'+ أضف للاستفسار';
+function card(p){
+  const on=list.includes(p.id);
+  return `<article class="card"><button class="open" type="button" data-open="${p.id}"><div class="ph"><img loading="lazy" src="img/t/${pad(p.id)}.webp" alt="${esc(p.name)}"></div><div class="meta"><span class="cat"><span class="num">${two(p.cat)}</span>${esc(CATS[p.cat].name)}</span><b>${hl(p.name)}</b></div></button><button class="add" type="button" data-add="${p.id}" aria-pressed="${on}">${addLabel(on)}</button></article>`;
+}
+function render(){
+  const words=norm(q).split(' ').filter(Boolean);
+  shown=ITEMS.filter(p=>(cat==0||p.cat==cat)&&words.every(w=>p.key.includes(w)));
+  const where=cat?`في قسم «${esc(CATS[cat].name)}»`:'في كل الأقسام';
+  const filtered=cat||q;
+  $('status').innerHTML=`<span><b>${shown.length}</b> منتج ${q?`لكلمة «${esc(q)}» `:''}${where}</span>${filtered?'<button class="reset" type="button" data-reset>عرض كل المنتجات</button>':''}`;
+  if(!shown.length){$('out').innerHTML=`<div class="empty"><b>ما لقينا منتج بهذا الاسم</b>جرّب كلمة أقصر مثل «صينية» أو «سكين»${cat?'، أو ابحث في كل الأقسام':''}.<br><button type="button" data-reset>عرض كل المنتجات</button></div>`;return}
+  const groups=q?[[0,shown]]:DATA.cats.filter(c=>!cat||c.n==cat).map(c=>[c.n,shown.filter(p=>p.cat==c.n)]);
+  $('out').innerHTML=groups.map(([n,arr])=>n?`<section class="sec" id="sec-${n}"><div class="sech"><span class="big">${two(n)}</span><h3>${esc(CATS[n].name)}<small>${arr.length} منتج</small></h3></div><div class="grid">${arr.map(card).join('')}</div></section>`:`<div class="grid" style="margin-top:14px">${arr.map(card).join('')}</div>`).join('');
+}
+function goFloor(){window.scrollTo({top:$('floor').offsetTop-document.querySelector('.top').offsetHeight,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}
+function setCat(c,scroll=true){cat=c;chips();render();if(scroll)goFloor()}
+function resetAll(){$('q').value='';q='';$('sbox').classList.remove('has');setCat(0)}
+function counts(){syncWa();[$('lcount'),$('lcount2')].forEach(e=>{e.textContent=list.length;e.classList.remove('bump');void e.offsetWidth;e.classList.add('bump')})}
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),2000)}
+function toggle(id){const i=list.indexOf(id);const added=i<0;if(added)list.push(id);else list.splice(i,1);save();counts();
+  document.querySelectorAll(`.card [data-add="${id}"]`).forEach(b=>{b.setAttribute('aria-pressed',added);b.textContent=addLabel(added)});
+  if(cur>-1)vstate();if($('drawer').classList.contains('on'))drawer();
+  toast(added?'تمت الإضافة لقائمة الاستفسار':'تمت الإزالة من القائمة')}
+
+/* viewer */
+function vstate(){const on=list.includes(shown[cur].id);const b=$('vadd');b.classList.toggle('on',on);b.textContent=on?'✓ في قائمة الاستفسار':'+ أضف لقائمة الاستفسار'}
+function openV(id,push=true){
+  if(!shown.some(p=>p.id==id)){$('q').value='';q='';$('sbox').classList.remove('has');cat=0;chips();render()}
+  cur=shown.findIndex(p=>p.id==id);const p=shown[cur];
+  $('vpic').src=`img/f/${pad(p.id)}.webp`;$('vpic').alt=p.name;
+  $('vname').textContent=p.name;
+  $('vcat').innerHTML=`<span class="num">${two(p.cat)}</span>${esc(CATS[p.cat].name)}`;$('vcat').dataset.cat=p.cat;
+  $('vpage').textContent=`صفحة ${p.page} في الكتالوج المطبوع`;
+  $('vcount').textContent=`${cur+1} من ${shown.length}`;
+  const rel=ITEMS.filter(x=>x.cat==p.cat&&x.id!=p.id).slice(0,6);
+  $('vrel').innerHTML=rel.map(x=>`<button type="button" data-open="${x.id}" aria-label="${esc(x.name)}"><img loading="lazy" src="img/t/${pad(x.id)}.webp" alt=""></button>`).join('');
+  $('vwa').href=wa(`السلام عليكم، أبي أستفسر عن: ${p.name} (صفحة ${p.page} في الكتالوج)\n${pageUrl()}#p-${p.id}`);
+  vstate();$('viewer').classList.add('on');document.body.style.overflow='hidden';
+  [cur-1,cur+1].forEach(k=>{if(shown[k]){const i=new Image();i.src=`img/f/${pad(shown[k].id)}.webp`}});
+  if(push&&location.hash!=='#p-'+p.id)history.replaceState(null,'','#p-'+p.id);
+  $('vclose').focus({preventScroll:true});
+}
+function step(d){openV(shown[(cur+d+shown.length)%shown.length].id)}
+function closeV(){$('viewer').classList.remove('on');document.body.style.overflow='';cur=-1;history.replaceState(null,'',location.pathname+location.search)}
+
+/* enquiry list */
+function drawer(){
+  const ul=$('dlist');ul.parentElement.querySelector('.none')?.remove();
+  if(!list.length){ul.innerHTML='';ul.style.display='none';ul.insertAdjacentHTML('afterend','<div class="none"><b>القائمة فاضية</b>اضغط «أضف للاستفسار» على أي منتج.</div>');return}
+  ul.style.display='';
+  ul.innerHTML=list.map((id,i)=>{const p=BYID[id];return `<li><img src="img/t/${pad(id)}.webp" alt=""><div><b>${i+1}. ${esc(p.name)}</b><span>${esc(CATS[p.cat].name)} · صفحة ${p.page}</span></div><button type="button" data-rm="${id}" aria-label="إزالة ${esc(p.name)}">×</button></li>`}).join('');
+}
+function openD(){drawer();$('drawer').classList.add('on');document.body.style.overflow='hidden';$('dclose').focus()}
+function closeD(){$('drawer').classList.remove('on');document.body.style.overflow=''}
+async function copy(t,ok){try{await navigator.clipboard.writeText(t);toast(ok)}catch(e){toast('ما قدرنا ننسخ، جرّب مرة ثانية')}}
+
+/* events */
+document.addEventListener('click',e=>{
+  const t=e.target;
+  const tile=t.closest('[data-cat]');if(tile&&!t.closest('#viewer')){resetQ();setCat(+tile.dataset.cat);return}
+  const ch=t.closest('.chip');if(ch){setCat(+ch.dataset.c);return}
+  const a=t.closest('[data-add]');if(a){toggle(+a.dataset.add);return}
+  const rm=t.closest('[data-rm]');if(rm){toggle(+rm.dataset.rm);return}
+  const o=t.closest('[data-open]');if(o){openV(+o.dataset.open);return}
+  if(t.closest('[data-reset]')){resetAll();return}
+  if(t.closest('[data-openlist]')){openD();return}
+});
+function resetQ(){$('q').value='';q='';$('sbox').classList.remove('has')}
+let qt;$('q').addEventListener('input',e=>{q=e.target.value.trim();$('sbox').classList.toggle('has',!!e.target.value);clearTimeout(qt);qt=setTimeout(()=>{render();if(q&&$('floor').getBoundingClientRect().top>200)goFloor()},150)});
+$('qclr').addEventListener('click',()=>{resetQ();render();$('q').focus()});
+$('home').addEventListener('click',e=>{e.preventDefault();resetQ();cat=0;chips();render();window.scrollTo({top:0})});
+$('vclose').onclick=closeV;$('vprev').onclick=()=>step(-1);$('vnext').onclick=()=>step(1);
+$('vadd').onclick=()=>toggle(shown[cur].id);
+$('vcat').onclick=()=>{const c=+$('vcat').dataset.cat;closeV();resetQ();setCat(c)};
+$('vlink').onclick=()=>copy(pageUrl()+'#p-'+shown[cur].id,'تم نسخ رابط المنتج');
+$('dwa').addEventListener('click',e=>{if(!list.length){e.preventDefault();toast('أضف منتجات للقائمة أولاً')}});
+$('viewer').addEventListener('click',e=>{if(e.target.id==='viewer'||e.target.id==='vstage')closeV()});
+let sx=null;$('vstage').addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});
+$('vstage').addEventListener('touchend',e=>{if(sx==null)return;const dx=e.changedTouches[0].clientX-sx;sx=null;if(Math.abs(dx)>50)step(dx>0?1:-1)});
+$('openList').onclick=openD;$('dclose').onclick=closeD;
+$('drawer').addEventListener('click',e=>{if(e.target.id==='drawer')closeD()});
+$('dclear').onclick=()=>{if(!list.length)return;list=[];save();counts();render();drawer();toast('تم تفريغ القائمة')};
+$('dcopy').onclick=()=>{if(!list.length){toast('أضف منتجات للقائمة أولاً');return}
+  copy(listText(),'تم نسخ القائمة')};
+document.addEventListener('keydown',e=>{
+  if($('viewer').classList.contains('on')){if(e.key==='Escape')closeV();else if(e.key==='ArrowLeft')step(1);else if(e.key==='ArrowRight')step(-1);return}
+  if($('drawer').classList.contains('on')){if(e.key==='Escape')closeD();return}
+  if(e.key==='/'&&document.activeElement!==$('q')){e.preventDefault();$('q').focus()}
+});
+function fromHash(){const m=location.hash.match(/^#p-(\d+)$/);if(m&&BYID[+m[1]])openV(+m[1],false);else if(cur>-1)closeV()}
+window.addEventListener('hashchange',fromHash);
+syncWa();chips();render();$('lcount').textContent=$('lcount2').textContent=list.length;fromHash();
+</script>
+</body>
+</html>
