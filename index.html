@@ -381,7 +381,7 @@ let list=[];try{list=JSON.parse(localStorage.getItem('ats-list')||'[]').map(Stri
 const save=()=>{try{localStorage.setItem('ats-list',JSON.stringify(list))}catch(e){}};
 $('st0').textContent=ITEMS.reduce((n,p)=>n+Math.max(1,p.v.length),0);$('st1').textContent=ITEMS.length;$('st2').textContent=DATA.cats.length;
 
-$('tiles').innerHTML=DATA.cats.map(c=>`<button class="tile" type="button" data-cat="${c.n}"><span class="pic"><img loading="lazy" src="img/t/${pad(firstOf(c.n).id)}.webp?v=3" alt=""></span><span class="cap"><span class="no">${two(c.n)}</span><span class="tx"><b>${esc(c.name)}</b><span>${c.count} منتج</span></span><span class="go" aria-hidden="true">←</span></span></button>`).join('');
+$('tiles').innerHTML=DATA.cats.map(c=>`<button class="tile" type="button" data-cat="${c.n}"><span class="pic"><img loading="lazy" src="img/t/${pad(firstOf(c.n).id)}.webp?v=4" alt=""></span><span class="cap"><span class="no">${two(c.n)}</span><span class="tx"><b>${esc(c.name)}</b><span>${c.count} منتج</span></span><span class="go" aria-hidden="true">←</span></span></button>`).join('');
 
 function chips(){
   $('chips').innerHTML=`<button class="chip" type="button" data-c="0" aria-pressed="${cat==0}">كل الأقسام <i>${ITEMS.length}</i></button>`+DATA.cats.map(c=>`<button class="chip" type="button" data-c="${c.n}" aria-pressed="${cat==c.n}">${esc(c.name)} <i>${c.count}</i></button>`).join('');
@@ -400,7 +400,7 @@ function card(p){
   const multi=p.v.length>1, key=p.v.length?p.id+':0':String(p.id);
   const sel=list.filter(k=>k.split(':')[0]==p.id).length;
   const btn=multi?`<button class="add pick" type="button" data-open="${p.id}" data-pick="1" aria-pressed="${sel>0}">${sel?`✓ تم اختيار ${nAs(sel)}`:'اختر الصنف'}</button>`:`<button class="add" type="button" data-add="${key}" aria-pressed="${list.includes(key)}">${addLabel(list.includes(key))}</button>`;
-  return `<article class="card"><button class="open" type="button" data-open="${p.id}"><div class="ph"><img loading="lazy" src="img/t/${pad(p.id)}.webp?v=3" alt="${esc(p.name)}"></div><div class="meta"><span class="cat"><span class="num">${two(p.cat)}</span>${esc(CATS[p.cat].name)}</span><b>${hl(p.name)}</b>${p.v.length>1?`<span class="vn">${nAs(p.v.length)}</span>`:''}</div></button>${btn}</article>`;
+  return `<article class="card"><button class="open" type="button" data-open="${p.id}"><div class="ph"><img loading="lazy" src="img/t/${pad(p.id)}.webp?v=4" alt="${esc(p.name)}"></div><div class="meta"><span class="cat"><span class="num">${two(p.cat)}</span>${esc(CATS[p.cat].name)}</span><b>${hl(p.name)}</b>${p.v.length>1?`<span class="vn">${nAs(p.v.length)}</span>`:''}</div></button>${btn}</article>`;
 }
 function render(){
   const words=norm(q).split(' ').filter(Boolean);
@@ -433,19 +433,19 @@ function vstate(){const p=shown[cur],b=$('vadd');
 function openV(id,push=true){
   if(!shown.some(p=>p.id==id)){$('q').value='';q='';$('sbox').classList.remove('has');cat=0;chips();render()}
   cur=shown.findIndex(p=>p.id==id);const p=shown[cur];
-  $('vpic').src=`img/f/${pad(p.id)}.webp?v=3`;$('vpic').alt=p.name;
+  $('vpic').src=`img/f/${pad(p.id)}.webp?v=4`;$('vpic').alt=p.name;
   $('vname').textContent=p.name;
   $('vcat').innerHTML=`<span class="num">${two(p.cat)}</span>${esc(CATS[p.cat].name)}`;$('vcat').dataset.cat=p.cat;
   $('vpage').textContent=`صفحة ${p.page} في الكتالوج المطبوع`;
   $('vcount').textContent=`${cur+1} من ${shown.length}`;
   const rel=ITEMS.filter(x=>x.cat==p.cat&&x.id!=p.id).slice(0,6);
-  $('vrel').innerHTML=rel.map(x=>`<button type="button" data-open="${x.id}" aria-label="${esc(x.name)}"><img loading="lazy" src="img/t/${pad(x.id)}.webp?v=3" alt=""></button>`).join('');
+  $('vrel').innerHTML=rel.map(x=>`<button type="button" data-open="${x.id}" aria-label="${esc(x.name)}"><img loading="lazy" src="img/t/${pad(x.id)}.webp?v=4" alt=""></button>`).join('');
   const vs=p.v;
   renderVars(p);
   $('vbody').scrollTop=0;
   $('vwa').href=wa(`السلام عليكم،\nأرغب بالاستفسار عن توفر وأسعار: *${p.name}*${p.v.length==1?`\nرقم الصنف: \u200E${p.v[0][1]}`:''}\n${pageUrl()}#p-${p.id}`);
   vstate();$('viewer').classList.add('on');document.body.style.overflow='hidden';
-  [cur-1,cur+1].forEach(k=>{if(shown[k]){const i=new Image();i.src=`img/f/${pad(shown[k].id)}.webp?v=3`}});
+  [cur-1,cur+1].forEach(k=>{if(shown[k]){const i=new Image();i.src=`img/f/${pad(shown[k].id)}.webp?v=4`}});
   if(push&&location.hash!=='#p-'+p.id)history.replaceState(null,'','#p-'+p.id);
   $('vclose').focus({preventScroll:true});
 }
@@ -457,7 +457,7 @@ function drawer(){
   const ul=$('dlist');ul.parentElement.querySelector('.none')?.remove();
   if(!list.length){ul.innerHTML='';ul.style.display='none';ul.insertAdjacentHTML('afterend','<div class="none"><b>القائمة فاضية</b>اضغط «أضف للاستفسار» على أي منتج.</div>');return}
   ul.style.display='';
-  ul.innerHTML=list.map((k,i)=>{const e=ent(k),p=e.p,n=entName(e),c=entCode(e);return `<li><img src="img/t/${pad(p.id)}.webp?v=3" alt=""><div><b>${i+1}. ${esc(n)}</b><span>${c?`<span class="cd">${esc(c)}</span> · `:''}${esc(CATS[p.cat].name)}</span>${stepper(k)}</div><button type="button" class="rmv" data-rm="${k}" aria-label="إزالة ${esc(n)}">×</button></li>`}).join('');
+  ul.innerHTML=list.map((k,i)=>{const e=ent(k),p=e.p,n=entName(e),c=entCode(e);return `<li><img src="img/t/${pad(p.id)}.webp?v=4" alt=""><div><b>${i+1}. ${esc(n)}</b><span>${c?`<span class="cd">${esc(c)}</span> · `:''}${esc(CATS[p.cat].name)}</span>${stepper(k)}</div><button type="button" class="rmv" data-rm="${k}" aria-label="إزالة ${esc(n)}">×</button></li>`}).join('');
 }
 function openD(){drawer();$('drawer').classList.add('on');document.body.style.overflow='hidden';$('dclose').focus()}
 function closeD(){$('drawer').classList.remove('on');document.body.style.overflow=''}
