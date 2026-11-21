@@ -78,6 +78,12 @@ img{max-width:100%;display:block}
 .tile .pic{display:block;aspect-ratio:16/10;overflow:hidden;background:#f6f0e8}
 .tile img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
 .tile:hover img{transform:scale(1.05)}
+.tile .pic.dz{position:relative;display:flex;align-items:center;justify-content:center;background:radial-gradient(120% 90% at 50% 40%,#fffaf1 0%,#f4e6cd 70%,#ead6b1 100%)}
+.tile .pic.dz::before{content:"";position:absolute;width:62%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fff 0%,#fbf1dd 62%,transparent 63%);box-shadow:0 0 0 1px rgba(201,162,74,.35),0 0 0 10px rgba(201,162,74,.08)}
+.tile .pic.dz::after{content:"";position:absolute;inset:10px;border:1px solid rgba(201,162,74,.35);border-radius:10px}
+.tile .cic{position:relative;width:46%;height:72%;color:var(--red);transition:transform .4s ease}
+.tile:hover .cic{transform:scale(1.08)}
+
 .tile .cap{flex:1;display:flex;align-items:center;gap:12px;padding:12px 14px 13px}
 .dept{scroll-margin-top:80px}
 .tile .no{flex-shrink:0;font-family:var(--display);font-size:24px;font-weight:600;color:var(--gold-hi);line-height:1}
@@ -346,6 +352,23 @@ const norm=s=>s.replace(/[ً-ْـ]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ة
 ITEMS.forEach(p=>{p.v=p.v||[];p.key=norm(p.name+' '+CATS[p.cat].name+' '+p.v.map(x=>x.join(' ')).join(' '))});
 const pad=n=>String(n).padStart(3,'0'), two=n=>String(n).padStart(2,'0');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const CATIC={
+1:'<path d="M24 40 49 9"/><path d="M49 9c2-3 7-2 7 2s-4 5-6 3"/><path d="M8 40h30a15 15 0 0 1-30 0z"/>',
+2:'<path d="M8 50 40 18c5-5 13-6 16-2-2 6-8 12-14 18L18 58"/><path d="M8 50l10 8"/><path d="M8 50 3 55c-2 2 0 6 3 4l6-5"/>',
+3:'<rect x="12" y="8" width="30" height="16" rx="3"/><path d="M12 13h-3M12 19h-3M42 13h3M42 19h3"/><path d="M27 24v32"/><path d="M23 56h8"/>',
+4:'<path d="M32 58V38"/><path d="M32 38c-12-4-14-26 0-32 14 6 12 28 0 32z"/><path d="M32 38c-5-4-6-24 0-30 6 6 5 26 0 30z"/><path d="M28 58h8"/>',
+5:'<path d="M6 26h52"/><path d="M9 26a23 21 0 0 0 46 0"/><path d="M15 32c10 6 24 6 34 0"/><path d="M24 49v5h16v-5"/>',
+6:'<path d="M8 30h48l-6 24H14z"/><path d="M14 30c0-14 36-14 36 0"/><path d="M22 22c2 3 2 6 0 8M32 19c2 3 2 7 0 11M42 22c2 3 2 6 0 8"/>',
+7:'<rect x="8" y="14" width="48" height="36" rx="3"/><path d="M8 26h48M8 38h48M20 14v36M32 14v36M44 14v36"/><path d="M12 50v6M52 50v6"/>',
+8:'<path d="M14 30V18h36v12"/><path d="M14 22c4 4 6 4 9 0 3 4 6 4 9 0 3 4 6 4 9 0 3 4 6 4 9 0"/><path d="M6 30h52"/><path d="M32 30v16"/><path d="M20 50h24l-4-4H24z"/><path d="M32 18v-6"/><circle cx="32" cy="10" r="2"/>',
+9:'<path d="M24 22h16v32a4 4 0 0 1-4 4h-8a4 4 0 0 1-4-4z"/><path d="M26 22l3-8h6l3 8"/><path d="M32 14V5"/><path d="M28 32h6M28 39h6M28 46h6"/>',
+10:'<rect x="8" y="24" width="48" height="28" rx="4"/><path d="M5 18h54v6H5z"/><path d="M24 18v-4h16v4"/><path d="M20 34h24"/>',
+11:'<path d="M8 42a24 24 0 0 1 48 0"/><path d="M4 42h56"/><path d="M10 48h44"/><path d="M28 18a4 4 0 0 1 8 0"/><path d="M18 34c2-6 6-9 11-10"/>',
+12:'<path d="M12 26h32v12a14 14 0 0 1-14 14h-4a14 14 0 0 1-14-14z"/><path d="M44 30h4a6 6 0 0 1 0 12h-5"/><path d="M8 58h40"/><path d="M22 8c-3 4 3 6 0 10M30 6c-3 4 3 6 0 10M38 8c-3 4 3 6 0 10"/>',
+13:'<path d="M14 10v38M50 10v38"/><path d="M14 16h36M14 30h36M14 44h36"/><path d="M10 10h8M46 10h8"/><circle cx="18" cy="54" r="4"/><circle cx="46" cy="54" r="4"/>',
+14:'<path d="M14 18h36"/><path d="M26 18v-6h12v6"/><path d="M17 18l3 40h24l3-40"/><path d="M27 26v24M37 26v24"/>'
+};
+const catIcon=n=>`<svg class="cic" viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">${CATIC[n]||''}</g></svg>`;
 const firstOf=c=>ITEMS.find(p=>p.cat==c);
 let cat=0,q='',shown=[],cur=-1;
 const WA='966546097810', wa=t=>`https://wa.me/${WA}?text=${encodeURIComponent(t)}`;
@@ -381,7 +404,7 @@ let list=[];try{list=JSON.parse(localStorage.getItem('ats-list')||'[]').map(Stri
 const save=()=>{try{localStorage.setItem('ats-list',JSON.stringify(list))}catch(e){}};
 $('st0').textContent=ITEMS.reduce((n,p)=>n+Math.max(1,p.v.length),0);$('st1').textContent=ITEMS.length;$('st2').textContent=DATA.cats.length;
 
-$('tiles').innerHTML=DATA.cats.map(c=>`<button class="tile" type="button" data-cat="${c.n}"><span class="pic"><img loading="lazy" src="img/cat/${String(c.n).padStart(2,'0')}.webp?v=1" alt=""></span><span class="cap"><span class="no">${two(c.n)}</span><span class="tx"><b>${esc(c.name)}</b><span>${c.count} منتج</span></span><span class="go" aria-hidden="true">←</span></span></button>`).join('');
+$('tiles').innerHTML=DATA.cats.map(c=>`<button class="tile" type="button" data-cat="${c.n}"><span class="pic dz">${catIcon(c.n)}</span><span class="cap"><span class="no">${two(c.n)}</span><span class="tx"><b>${esc(c.name)}</b><span>${c.count} منتج</span></span><span class="go" aria-hidden="true">←</span></span></button>`).join('');
 
 function chips(){
   $('chips').innerHTML=`<button class="chip" type="button" data-c="0" aria-pressed="${cat==0}">كل الأقسام <i>${ITEMS.length}</i></button>`+DATA.cats.map(c=>`<button class="chip" type="button" data-c="${c.n}" aria-pressed="${cat==c.n}">${esc(c.name)} <i>${c.count}</i></button>`).join('');
