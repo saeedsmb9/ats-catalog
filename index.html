@@ -75,7 +75,7 @@ img{max-width:100%;display:block}
 .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
 .tile{display:flex;flex-direction:column;width:100%;text-align:start;border-radius:16px;overflow:hidden;background:var(--ember);color:#fff;border:1px solid var(--ember);transition:transform .2s,box-shadow .2s}
 .tile:hover{transform:translateY(-3px);box-shadow:0 16px 28px -16px rgba(60,20,10,.55)}
-.tile .pic{display:block;aspect-ratio:16/10;overflow:hidden;background:#efe7db}
+.tile .pic{display:block;aspect-ratio:16/10;overflow:hidden;background:#f6f0e8}
 .tile img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
 .tile:hover img{transform:scale(1.05)}
 .tile .cap{flex:1;display:flex;align-items:center;gap:12px;padding:12px 14px 13px}
@@ -381,7 +381,7 @@ let list=[];try{list=JSON.parse(localStorage.getItem('ats-list')||'[]').map(Stri
 const save=()=>{try{localStorage.setItem('ats-list',JSON.stringify(list))}catch(e){}};
 $('st0').textContent=ITEMS.reduce((n,p)=>n+Math.max(1,p.v.length),0);$('st1').textContent=ITEMS.length;$('st2').textContent=DATA.cats.length;
 
-$('tiles').innerHTML=DATA.cats.map(c=>`<button class="tile" type="button" data-cat="${c.n}"><span class="pic"><img loading="lazy" src="img/t/${pad(firstOf(c.n).id)}.webp?v=4" alt=""></span><span class="cap"><span class="no">${two(c.n)}</span><span class="tx"><b>${esc(c.name)}</b><span>${c.count} منتج</span></span><span class="go" aria-hidden="true">←</span></span></button>`).join('');
+$('tiles').innerHTML=DATA.cats.map(c=>`<button class="tile" type="button" data-cat="${c.n}"><span class="pic"><img loading="lazy" src="img/cat/${String(c.n).padStart(2,'0')}.webp?v=1" alt=""></span><span class="cap"><span class="no">${two(c.n)}</span><span class="tx"><b>${esc(c.name)}</b><span>${c.count} منتج</span></span><span class="go" aria-hidden="true">←</span></span></button>`).join('');
 
 function chips(){
   $('chips').innerHTML=`<button class="chip" type="button" data-c="0" aria-pressed="${cat==0}">كل الأقسام <i>${ITEMS.length}</i></button>`+DATA.cats.map(c=>`<button class="chip" type="button" data-c="${c.n}" aria-pressed="${cat==c.n}">${esc(c.name)} <i>${c.count}</i></button>`).join('');
